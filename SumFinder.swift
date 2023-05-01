@@ -10,7 +10,7 @@ import SwiftUI
 class SumFinder: ObservableObject{
     
     
-//    func Sumfinder(Intensity: Double, A: Double, B: Double, x_0: Double, y_0: Double, Sigmax: Double, Sigmay: Double, width: Int, height: Int, h: Double, k: Double, f: Double, l: Double, m: Double, n: Double, o: Double, TestingValues: [[Double]]) -> Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: 0.0, count: 3), count: 3), count: 3), count: 3), count: 3), count: 3), count: 3) {
+//    func Sumfinder(Intensity: Double, A: Double, B: Double, x_0: Double, y_0: Double, Sigmax: Double, Sigmay: Double, width: Int, height: Int, h: Double, k: Double, f: Double, l: Double, m: Double, n: Double, o: Double, TestingValues: [[Double]]) -> (Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: 0.0, count: 3), count: 3), count: 3), count: 3), count: 3), count: 3), count: 3)) {
 //        var TestedValues = [[Double]](repeating: [Double](repeating: 0.0, count: 15), count: 15)
 //        var I_test = Intensity
 //        var Sigx_test = Sigmax
