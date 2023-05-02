@@ -21,7 +21,7 @@ struct ContentView: View {
     
     let Width = 15.0
     //want the color to vary with intensity, with red being at the peak and blue being at the nadir.
-    @State var GColor = Color(red: 0.25, green: 0.5, blue: 0.75)
+   // @State var GColor = Color(red: 0.25, green: 0.5, blue: 0.75)
     var body: some View {
         VStack{
             HStack{
@@ -62,9 +62,8 @@ struct ContentView: View {
                         for value in GaussFinder.intensities{
                             let rect = CGRect(x: value.x * (CGFloat(Width)), y: value.y * (CGFloat(Width)), width: (CGFloat(Width)), height: (CGFloat(Width)))
                             let shape = Rectangle().path(in: rect)
-                            // context.fill(shape, with: .color($GColor))
                             //if value.intensity > -0.02{
-                                context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.0, blue: 0)))
+                            context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.2 - value.intensity, blue: 0.5 - value.intensity)))
                             //}
                             
                         }
@@ -135,6 +134,7 @@ class TestGaussianFinder: ObservableObject{
 //        }
         
         print(intensities)
+       // break
     }
 
 }
