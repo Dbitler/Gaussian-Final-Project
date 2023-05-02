@@ -58,6 +58,8 @@ struct ContentView: View {
 //
 //                            }
 //                        }
+                    // above code warps the pixels of the graph, below code has messed up graph box.
+                    
                     Canvas{ context, size in GaussFinder.TiltedGaussian2()
                         for value in GaussFinder.intensities{
                             let rect = CGRect(x: value.x * (CGFloat(Width)), y: value.y * (CGFloat(Width)), width: (CGFloat(Width)), height: (CGFloat(Width)))
@@ -119,22 +121,22 @@ class TestGaussianFinder: ObservableObject{
                 for y in 0..<height{
                     let value = mygaussianinstance.Gaussianeqn(x: x, y: y, x_0: x_0, y_0: y_0, sigma_x: sigma_x, sigma_y: sigma_y, I_0: I_0, A: A, B: B)
                     //intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
-                    intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
-                    //what is "cannot call value of non-function type 'Double' "
-                    //have to normalize the values, such that the maximum value in the graph is =1, so that the colors of the graph look alright.
                     if value > normalizefactor{
                         normalizefactor = value
                     }
+                    intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
+                    //what is "cannot call value of non-function type 'Double' "
+                    //have to normalize the values, such that the maximum value in the graph is =1, so that the colors of the graph look alright.
                 }
         }
 //        for x in 0..<width{
 //            for y in 0..<height{
-//                intensities[x][y] = Double(intensities.intensity) / normalizefactor
+//                intensities[x][y].2 = Double(intensities.intensity) / normalizefactor
 //            }
 //        }
+        // for some reason, this doesn't work at all, but it should. for some reason intensities[x] returns only the y value, [x][y] returns an error.
         
         print(intensities)
-       // break
     }
 
 }
