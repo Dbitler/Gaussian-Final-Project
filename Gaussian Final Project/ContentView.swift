@@ -46,22 +46,39 @@ struct ContentView: View {
                         .padding()
                 }
                 VStack{
-                    Canvas{ context, size in GaussFinder
+                   // TimelineView(.animation) { timeline in
+//                        Canvas{ context, size in GaussFinder.TiltedGaussian2()
+//                            for value in GaussFinder.intensities{
+//                                let rect = CGRect(x: value.x * (size.width/CGFloat(Width)), y: value.y * (size.height/CGFloat(Width)), width: (size.height/CGFloat(Width)), height: (size.height/CGFloat(Width)))
+//                                let shape = Rectangle().path(in: rect)
+//                                // context.fill(shape, with: .color($GColor))
+//                                //if value.intensity > -0.02{
+//                                    context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.0, blue: 0)))
+//                                //}
+//
+//                            }
+//                        }
+                    Canvas{ context, size in GaussFinder.TiltedGaussian2()
                         for value in GaussFinder.intensities{
-                            let rect = CGRect(x: value.x * (size.width/CGFloat(Width)), y: value.y * (size.height/CGFloat(Width)), width: (size.height/CGFloat(Width)), height: (size.height/CGFloat(Width)))
+                            let rect = CGRect(x: value.x * (CGFloat(Width)), y: value.y * (CGFloat(Width)), width: (CGFloat(Width)), height: (CGFloat(Width)))
                             let shape = Rectangle().path(in: rect)
-                           // context.fill(shape, with: .color($GColor))
-                            context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.5, blue: 0.75)))
-
+                            // context.fill(shape, with: .color($GColor))
+                            //if value.intensity > -0.02{
+                                context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.0, blue: 0)))
+                            //}
+                            
                         }
                     }
+                    //}
                     .background(.black)
+                    .ignoresSafeArea()
+                    .padding()
                 }
             }
             .padding()
             VStack{
                 //uncomment once get graph working.
-                //Button("Click for Least Squares", action: TestingFunction)
+                Button("Click for Least Squares", action: TestingFunction)
                 Button("Click for Graph", action: GraphTest)
             }
                     
@@ -84,29 +101,40 @@ struct Intensity: Hashable, Equatable {
 }
 
 class TestGaussianFinder: ObservableObject{
-     // var intensities: [Intensity] = []
+    //var intensities: [Intensity] = []
     var intensities: [(x:Double, y:Double, intensity:Double)] = []
     var mygaussianinstance = GaussianFinder()
     func TiltedGaussian2(){
-        let I_0 = 0.9
+        let I_0 = 5.0
         let width = 15
         let height = 15
-        var Intensity = 1.5
-        var sigma_x = 1.3
-        var sigma_y = 1.3
-        var x_0 = 6.8
-        var y_0 = 7.2
-        var A = 0.005
-        var B = 0.007
+        //let Intensity = 1.5
+        let sigma_x = 2.0
+        let sigma_y = 2.0
+        let x_0 = 6.8
+        let y_0 = 7.2
+        let A = 0.005
+        let B = 0.007
+        var normalizefactor = 0.0
         for x in 0..<width{
                 for y in 0..<height{
                     let value = mygaussianinstance.Gaussianeqn(x: x, y: y, x_0: x_0, y_0: y_0, sigma_x: sigma_x, sigma_y: sigma_y, I_0: I_0, A: A, B: B)
-                    
+                    //intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
                     intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
                     //what is "cannot call value of non-function type 'Double' "
-                    print("hello")
+                    //have to normalize the values, such that the maximum value in the graph is =1, so that the colors of the graph look alright.
+                    if value > normalizefactor{
+                        normalizefactor = value
+                    }
                 }
         }
+//        for x in 0..<width{
+//            for y in 0..<height{
+//                intensities[x][y] = Double(intensities.intensity) / normalizefactor
+//            }
+//        }
+        
+        print(intensities)
     }
 
 }

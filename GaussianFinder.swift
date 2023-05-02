@@ -144,8 +144,10 @@ class GaussianFinder: ObservableObject {
             }
             numloop = numloop + 1
             print(Intensity, Sigmax, x_0, y_0, Sigmay, A, B)
+            //tolerance is controlled here, tolerance value needs to increase (accuracy decrease) with more variables.
             if SumArray[1][1][1][1][1][1][1] <= 0.005{
                 minimized = false
+                var intensities: [(x:Double, y:Double, intensity:Double)] = []
 //                print("the value of I is \(Intensity)")
 //                print("the value of sigma_x^2 is \(Sigmax)")
 //                print("the value of sigma_y^2 is \(Sigmay)")
@@ -166,6 +168,14 @@ class GaussianFinder: ObservableObject {
                 xstring = String(format: "The value of x is %.2f.", x_0)
                 ystring = String(format: "The value of y is %.2f.", y_0)
                 self.numstring = "There were \(numloop) loops to get here!"
+                for x in 0..<width{
+                    for y in 0..<height{
+                        let intensity = Gaussianeqn(x: x, y: y, x_0: x0_test, y_0: y0_test, sigma_x: Sigx_test, sigma_y: Sigy_test, I_0: I_test, A: A_test, B: B_test)
+                        intensities.append((x: Double(x), y: Double(y), intensity: Double(intensity)))
+                        //need to make this return to the GaussFinder, so that i can be displayed in the graph proper. 
+                    }
+                }
+                break
             }
 
             //sum needs to be the entirety of the x=15 width, or it does not work. So i would need to do a small loop, for the x width, for the four values of (I-H, S), (I+H, S), (I+H, S+K), and (I, S+K). do those sums, and find the slope of those sums relative to each other.
