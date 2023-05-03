@@ -47,34 +47,16 @@ struct ContentView: View {
                 }
             }
                         Canvas{ context, size in GaussFinder.TiltedGaussian2()
-                          // let  size = CGSize(width: 500, height: 500)
                             for value in GaussFinder.intensities{
-                                print(size)
                                 let rect = CGRect(x: value.x * (size.width/CGFloat(Width)), y: value.y * (size.height/CGFloat(Width)), width: (size.height/CGFloat(Width)), height: (size.height/CGFloat(Width)))
-                                
                                 let shape = Rectangle().path(in: rect)
-                                // context.fill(shape, with: .color($GColor))
-                                //if value.intensity > -0.02{
                                     context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.3 - value.intensity, blue: 0.5 - value.intensity)))
-                                //}
 
                             }
 
                         }
                         .frame(width: 200, height: 200)
-                    // above code warps the pixels of the graph, below code has messed up graph box.
-                    
-//            Canvas{ context, size  in GaussFinder.TiltedGaussian2()
-//                let size = CGSize(width: 500, height: 500)
-//                        for value in GaussFinder.intensities{
-//                            let rect = CGRect(x: value.x * (CGFloat(Width)), y: value.y * (CGFloat(Width)), width: (CGFloat(Width)), height: (CGFloat(Width)))
-//                            let shape = Rectangle().path(in: rect)
-//
-//                            context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.3 - value.intensity, blue: 0.5 - value.intensity)))
-//
-//
-//                        }
-//                    }
+                    // above code squashes and stretches graph, adds black lines. FIXED. needed to add the frame code. Need to make it so it doesn't graph until you hit the button.
                    
                     .background(.black)
                     .ignoresSafeArea()
@@ -131,7 +113,6 @@ class TestGaussianFinder: ObservableObject{
                         normalizefactor = value
                     }
                     intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
-                    //what is "cannot call value of non-function type 'Double' "
                     //have to normalize the values, such that the maximum value in the graph is =1, so that the colors of the graph look alright.
                 }
         }
