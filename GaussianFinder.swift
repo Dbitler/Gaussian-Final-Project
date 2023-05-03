@@ -157,17 +157,17 @@ class GaussianFinder: ObservableObject {
 //                print("the value of B is \(B)")
 //                print("there were \(numloop) loops!")
                 //self.Istring = "The value of I is \(Intensity)."
-                Istring = String(format: "The value of the central intensity is %.2f.", Intensity)
+                Istring = String(format: "central intensity= %.2f.", Intensity)
 //                self.Sxstring = "The value of sigma_x^2 is \(round(Sigmax))."
-                Sxstring = String(format: "The value of sigma_x^2 is %.1f.", Sigmax)
+                Sxstring = String(format: "sigma_x^2= %.1f.", Sigmax)
 //                self.Systring = "The value of sigma_y^2 is \(Sigmay)."
-                Systring = String(format: "The value of sigma_y^2 is %.1f.", Sigmay)
+                Systring = String(format: "sigma_y^2= %.1f.", Sigmay)
                 //self.Astring = "The value of A is \(A)."
-                Astring = String(format: "The value of A is %.3f.", A)
-                Bstring = String(format: "The value of B is %.3f.", B)
-                xstring = String(format: "The value of x is %.2f.", x_0)
-                ystring = String(format: "The value of y is %.2f.", y_0)
-                self.numstring = "There were \(numloop) loops to get here!"
+                Astring = String(format: "A = %.3f.", A)
+                Bstring = String(format: "B = %.3f.", B)
+                xstring = String(format: "x= %.2f.", x_0)
+                ystring = String(format: "y = %.2f.", y_0)
+                self.numstring = "\(numloop) loops to get here!"
                 for x in 0..<width{
                     for y in 0..<height{
                         let intensity = Gaussianeqn(x: x, y: y, x_0: x0_test, y_0: y0_test, sigma_x: Sigx_test, sigma_y: Sigy_test, I_0: I_test, A: A_test, B: B_test)

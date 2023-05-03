@@ -45,36 +45,42 @@ struct ContentView: View {
                     Text(mygaussianinstance.ystring)
                         .padding()
                 }
-                VStack{
-                   // TimelineView(.animation) { timeline in
-//                        Canvas{ context, size in GaussFinder.TiltedGaussian2()
-//                            for value in GaussFinder.intensities{
-//                                let rect = CGRect(x: value.x * (size.width/CGFloat(Width)), y: value.y * (size.height/CGFloat(Width)), width: (size.height/CGFloat(Width)), height: (size.height/CGFloat(Width)))
-//                                let shape = Rectangle().path(in: rect)
-//                                // context.fill(shape, with: .color($GColor))
-//                                //if value.intensity > -0.02{
-//                                    context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.0, blue: 0)))
-//                                //}
-//
-//                            }
-//                        }
+            }
+                        Canvas{ context, size in GaussFinder.TiltedGaussian2()
+                          // let  size = CGSize(width: 500, height: 500)
+                            for value in GaussFinder.intensities{
+                                print(size)
+                                let rect = CGRect(x: value.x * (size.width/CGFloat(Width)), y: value.y * (size.height/CGFloat(Width)), width: (size.height/CGFloat(Width)), height: (size.height/CGFloat(Width)))
+                                
+                                let shape = Rectangle().path(in: rect)
+                                // context.fill(shape, with: .color($GColor))
+                                //if value.intensity > -0.02{
+                                    context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.3 - value.intensity, blue: 0.5 - value.intensity)))
+                                //}
+
+                            }
+
+                        }
+                        .frame(width: 200, height: 200)
                     // above code warps the pixels of the graph, below code has messed up graph box.
                     
-                    Canvas{ context, size in GaussFinder.TiltedGaussian2()
-                        for value in GaussFinder.intensities{
-                            let rect = CGRect(x: value.x * (CGFloat(Width)), y: value.y * (CGFloat(Width)), width: (CGFloat(Width)), height: (CGFloat(Width)))
-                            let shape = Rectangle().path(in: rect)
-                            //if value.intensity > -0.02{
-                            context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.2 - value.intensity, blue: 0.5 - value.intensity)))
-                            //}
-                            
-                        }
-                    }
-                    //}
+//            Canvas{ context, size  in GaussFinder.TiltedGaussian2()
+//                let size = CGSize(width: 500, height: 500)
+//                        for value in GaussFinder.intensities{
+//                            let rect = CGRect(x: value.x * (CGFloat(Width)), y: value.y * (CGFloat(Width)), width: (CGFloat(Width)), height: (CGFloat(Width)))
+//                            let shape = Rectangle().path(in: rect)
+//
+//                            context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.3 - value.intensity, blue: 0.5 - value.intensity)))
+//
+//
+//                        }
+//                    }
+                   
                     .background(.black)
                     .ignoresSafeArea()
                     .padding()
-                }
+                    
+                
             }
             .padding()
             VStack{
@@ -84,7 +90,7 @@ struct ContentView: View {
             }
                     
         }
-    }
+
 
     //the least square is the one that needs to be given, and show the calculated values as close as possible. numerically differentiate the equation to get the gradient, to show how close it is to the possible minimum. Can only get close, not exactly 0, because of the noise in the IPRO data.
     func TestingFunction(){
@@ -136,7 +142,7 @@ class TestGaussianFinder: ObservableObject{
 //        }
         // for some reason, this doesn't work at all, but it should. for some reason intensities[x] returns only the y value, [x][y] returns an error.
         
-        print(intensities)
+     print(intensities)
     }
 
 }
