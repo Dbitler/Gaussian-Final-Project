@@ -156,8 +156,8 @@ struct Intensity: Hashable, Equatable {
 }
 
 class TestGaussianFinder: ObservableObject{
-    var intensities: [Intensity] = []
-    //var intensities: [(x:Double, y:Double, intensity:Double)] = []
+    //var intensities: [Intensity] = []
+    var intensities: [(x:Double, y:Double, intensity:Double)] = []
     var fittingintensities: [(x:Double, y:Double, intensity:Double)] = []
     var mygaussianinstance = GaussianFinder()
     var myequationinstance = BaselineGaussianEquations()
@@ -179,22 +179,21 @@ class TestGaussianFinder: ObservableObject{
         for x in 0..<Width{
                 for y in 0..<Height{
                     let value = myequationinstance.Gaussianeqn(x: x, y: y, x_0: x_0, y_0: y_0, sigma_x: sigma_x, sigma_y: sigma_y, I_0: I_0, A: A, B: B)
-                    //intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
+                    intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
                     if value > normalizefactor{
                         normalizefactor = value
                     }
                     if value < positivefactor{
                         positivefactor = value
                     }
-                    //intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
-                    intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
+                   // intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
                     //have to normalize the values, such that the maximum value in the graph is =1, so that the colors of the graph look alright.
                 }
         }
             // this normalizes the data, such that the data is all positive and between 0 and 1, thus preventing the color code from peaking out and flattening the curve.
             for y in 0..<(height*width){
-               // intensities[y].2 = Double(intensities[y].intensity) - positivefactor
-              //  intensities[y].2 = Double(intensities[y].intensity) / normalizefactor
+                intensities[y].2 = Double(intensities[y].intensity) - positivefactor
+                intensities[y].2 = Double(intensities[y].intensity) / normalizefactor
             }
 
      //print(intensities)
