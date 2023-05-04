@@ -92,9 +92,7 @@ class GaussianFinder: ObservableObject {
     func TestingGaussian() -> [Double]{
         let I_true = Double(Itruestring)!
         var Intensity = Double(Iteststring)!
-        
-        
-        let I_0 = 1.5
+
         let width = 15
         let height = 15
         var numloop = 0.0
@@ -105,26 +103,24 @@ class GaussianFinder: ObservableObject {
         let sigy_true = Double(Sytruestring)!
         
         
-        var x_0 = 7.0
-        var y_0 = 7.0
-        var A = 0.006
-        var B = 0.006
+        var x_0 = Double(xteststring)!
+        var y_0 = Double(yteststring)!
+        let x_0true = Double(xtruestring)!
+        let y_0true = Double(ytruestring)!
+        
+        var A = Double(Ateststring)!
+        var B = Double(Bteststring)!
+        let Atrue = Double(Atruestring)!
+        let Btrue = Double(Btruestring)!
         //tolerances are very low, it can't handle too big of a spread, or else it finds a false minimum to fall into.
         //things still to do: optimize the code more, seperate it into instances.
-        var I_test = Intensity
-        var Sigx_test = Sigmax
-        var Sigy_test = Sigmay
-        var x0_test = x_0
-        var y0_test = y_0
-        var A_test = A
-        var B_test = B
 
         var minimized = true
-        let TestingValues = TiltedGaussian(I_0: I_true, A: 0.006, B: 0.006, x_0: 7.0, y_0: 7.0, sigma_x: 1.3, sigma_y: 1.3, width: 15, height: 15)
+        let TestingValues = TiltedGaussian(I_0: I_true, A: Atrue, B: Btrue, x_0: x_0true, y_0: y_0true, sigma_x: sigx_true, sigma_y: sigy_true, width: width, height: width)
         //this is the Intensity that the function below is testing against, to find the least squares. In the IPRO code, this would be removed,and it would be instead testing against the raw data.
         while minimized{
             //3x3x3x3x3x3x3 matrix
-           var SumArray = Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: 0.0, count: 3), count: 3), count: 3), count: 3), count: 3), count: 3), count: 3)
+          // var SumArray = Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: 0.0, count: 3), count: 3), count: 3), count: 3), count: 3), count: 3), count: 3)
             var TestedValues = [[Double]](repeating: [Double](repeating: 0.0, count: 15), count: 15)
             let h = 0.01
             let k = 0.01
@@ -134,58 +130,7 @@ class GaussianFinder: ObservableObject {
             let n = 0.0001
             let o = 0.0001
             var sum = 0.0
-           //let SumArray = mysuminstance.Sumfinder(Intensity: Intensity, A: A, B: A, x_0: x_0, y_0: y_0, Sigmax: Sigmax, Sigmay: Sigmay, width: width, height: height, h: h, k: k, f: f, l: l, m: m, n: n, o: o, TestingValues: TestingValues)
-            //Need to get this to work.
-            for I in 0...2{
-                for J in 0...2{
-                    for K in 0...2{
-                        for L in 0...2{
-                            for M in 0...2{
-                                for N in 0...2{
-                                    for O in 0...2{
-                                        sum = 0.0
-                                        I_test = Intensity
-                                        Sigx_test = Sigmax
-                                        Sigy_test = Sigmay
-                                        x0_test = x_0
-                                        y0_test = y_0
-                                        A_test = A
-                                        B_test = B
-
-//                                        Sigx_test = Sigmax + (Double(J - 1) * k * Sigmax)
-//                                        Sigy_test = Sigmay + (Double(L - 1) * l * Sigmay)
-//                                        I_test  = Intensity + (Double(I - 1) * h * Intensity)
-//                                        x0_test = x_0 + (Double(K - 1) * f * x_0)
-//                                        y0_test = y_0 + (Double(M - 1) * m * x_0)
-//                                        A_test = A + (Double(N - 1) * n * A)
-//                                        B_test = B + (Double(O - 1) * o * B)
-
-                                        Sigx_test = Sigmax + (Double(J - 1) * k)
-                                        Sigy_test = Sigmay + (Double(L - 1) * l)
-                                        I_test  = Intensity + (Double(I - 1) * h)
-                                        x0_test = x_0 + (Double(K - 1) * f)
-                                        y0_test = y_0 + (Double(M - 1) * m)
-                                        A_test = A + (Double(N - 1) * n )
-                                        B_test = B + (Double(O - 1) * o )
-
-//no idea how this program would react to trying to creat a gaussian profile near the edge of a photo, because you would have to only fit half a gaussian. should probably discard star candidates within 7-8 pixels of the edge.
-                                        for x in 0..<width{
-                                            for y in 0..<height{
-                                                let intensity = Gaussianeqn(x: x, y: y, x_0: x0_test, y_0: y0_test, sigma_x: Sigx_test, sigma_y: Sigy_test, I_0: I_test, A: A_test, B: B_test)
-                                                //this is the array that will become graphed.
-                                                TestedValues[x][y]=intensity
-                                                sum = sum + pow((TestingValues[x][y] - TestedValues[x][y]),2)
-                                            }
-                                        }
-                                        // print(I_test,Sig_test, sum)
-                                        SumArray[I][J][K][L][M][N][O] = sum
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+           let SumArray = mysuminstance.Sumfinder(Intensity: Intensity, A: A, B: B, x_0: x_0, y_0: y_0, Sigmax: Sigmax, Sigmay: Sigmay, width: width, height: height, Istep: h, Sxstep: k, Systep: l, x0step: f, y0step: m, Astep: n, Bstep: o, TestingValues: TestingValues)
             numloop = numloop + 1
             print(Intensity, Sigmax, x_0, y_0, Sigmay, A, B) //this keeps running for some reason???
             
