@@ -125,7 +125,6 @@ struct ContentView: View {
             }
             .padding()
             VStack{
-                //uncomment once get graph working.
                 Button("Click for Least Squares", action: self.TestingFunction)
                 Button("Click for Graph", action: self.GraphTest)
             }
