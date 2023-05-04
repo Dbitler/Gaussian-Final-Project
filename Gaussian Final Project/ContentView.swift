@@ -10,6 +10,7 @@
 // have to make the graph only visible one the button is pressed.
 // should make it so the variables are easily editable.
 // need to make the graphs update when variables are edited and the button is pressed.
+//fix strange bug that removes normalization when run through the least squares fitting. 
 // That's it, i guess????
 
 import SwiftUI
@@ -208,8 +209,8 @@ class TestGaussianFinder: ObservableObject{
         }
             // this normalizes the data, such that the data is all positive and between 0 and 1, thus preventing the color code from peaking out and flattening the curve.
             for y in 0..<(height*width){
-                intensities[y].2 = Double(intensities[y].intensity) - positivefactor
-                intensities[y].2 = Double(intensities[y].intensity) / normalizefactor
+               // intensities[y].2 = Double(intensities[y].intensity) - positivefactor
+              //  intensities[y].2 = Double(intensities[y].intensity) / normalizefactor
             }
 
      //print(intensities)

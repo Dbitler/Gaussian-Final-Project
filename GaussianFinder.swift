@@ -19,8 +19,8 @@ class GaussianFinder: ObservableObject {
     @Published var ystring = ""
     @Published var numstring = ""
     
-    @Published var Iteststring = "5.0"
-    @Published var Itruestring = "5.0"
+    @Published var Iteststring = "1.0"
+    @Published var Itruestring = "1.0"
 
     @Published var Sxteststring = "1.3"
     @Published var Syteststring = "1.3"
@@ -31,8 +31,8 @@ class GaussianFinder: ObservableObject {
     @Published var Ateststring = "0.006"
     @Published var Bteststring = "0.006"
     
-    @Published var Atruestring = "0.006"
-    @Published var Btruestring = "0.006"
+    @Published var Atruestring = "0.01"
+    @Published var Btruestring = "0.01"
     
     @Published var xteststring = "7.0"
     @Published var yteststring = "7.0"
