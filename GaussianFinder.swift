@@ -31,14 +31,15 @@ class GaussianFinder: ObservableObject {
     @Published var Ateststring = "0.006"
     @Published var Bteststring = "0.006"
     
-    @Published var Atruestring = "0.01"
-    @Published var Btruestring = "0.01"
+    @Published var Atruestring = "0.006"
+    @Published var Btruestring = "0.006"
     
     @Published var xteststring = "7.0"
     @Published var yteststring = "7.0"
     
     @Published var xtruestring = "7.0"
     @Published var ytruestring = "7.0"
+    var foundParameters :[Double] = []
 
 //    let I_0 = 1.5
 //    let width = 15
@@ -191,8 +192,7 @@ class GaussianFinder: ObservableObject {
             //tolerance is controlled here, tolerance value needs to increase (accuracy decrease) with more variables.
             if SumArray[1][1][1][1][1][1][1] <= 0.005{
                 minimized = false
-                var intensities: [(x:Double, y:Double, intensity:Double)] = []
-                var foundParameters :[Double] = []
+                 foundParameters = []
 //                print("the value of I is \(Intensity)")
 //                print("the value of sigma_x^2 is \(Sigmax)")
 //                print("the value of sigma_y^2 is \(Sigmay)")
