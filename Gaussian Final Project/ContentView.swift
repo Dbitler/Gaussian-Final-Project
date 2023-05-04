@@ -10,7 +10,8 @@
 // have to make the graph only visible one the button is pressed.
 // should make it so the variables are easily editable. 
 // need to make the graphs update when variables are edited and the button is pressed.
-//fix strange bug that removes normalization when run through the least squares fitting. 
+//fix strange bug that removes normalization when run through the least squares fitting.
+// call to testingGaussian is unused?? what????
 // That's it, i guess????
 
 import SwiftUI
@@ -127,7 +128,7 @@ struct ContentView: View {
             }
             .padding()
             VStack{
-                Button("Click for Least Squares", action: self.TestingFunction)
+                Button("Click for Least Squares", action: TestingFunction)
                 Button("Click for Graph", action: self.setupSpins)
             }
                     
@@ -164,6 +165,7 @@ class TestGaussianFinder: ObservableObject{
 
     func BaselineTestGaussian(Width: Int, Height: Int){
         intensities = []
+        
         let I_0 = Double(mygaussianinstance.Itruestring)!
         let width = 15
         let height = 15
@@ -179,14 +181,15 @@ class TestGaussianFinder: ObservableObject{
         for x in 0..<Width{
                 for y in 0..<Height{
                     let value = myequationinstance.Gaussianeqn(x: x, y: y, x_0: x_0, y_0: y_0, sigma_x: sigma_x, sigma_y: sigma_y, I_0: I_0, A: A, B: B)
-                    intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
+                   // intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
                     if value > normalizefactor{
                         normalizefactor = value
                     }
                     if value < positivefactor{
                         positivefactor = value
                     }
-                   // intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
+                    intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
+                    //intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
                     //have to normalize the values, such that the maximum value in the graph is =1, so that the colors of the graph look alright.
                 }
         }
