@@ -9,18 +9,7 @@ import SwiftUI
 
 class GaussianFinder: ObservableObject {
     @ObservedObject var mysuminstance = SumFinder()
-    let I_0 = 0.9
-    let width = 15
-    let height = 15
-    var numloop = 0.0
-    var sum = 0.0
-    var Intensity = 1.4
-    var Sigmax = 1.4
-    var Sigmay = 1.1
-    var x_0 = 6.8
-    var y_0 = 7.2
-    var A = 0.005
-    var B = 0.007
+    @Published var TestString = ""
     @Published var Istring = ""
     @Published var Sxstring = ""
     @Published var Systring = ""
@@ -29,7 +18,42 @@ class GaussianFinder: ObservableObject {
     @Published var xstring = ""
     @Published var ystring = ""
     @Published var numstring = ""
+    
+    @Published var Iteststring = "5.0"
+    @Published var Itruestring = "5.0"
 
+    @Published var Sxteststring = "1.3"
+    @Published var Syteststring = "1.3"
+    
+    @Published var Sxtruestring = "1.3"
+    @Published var Sytruestring = "1.3"
+    
+    @Published var Ateststring = "0.006"
+    @Published var Bteststring = "0.006"
+    
+    @Published var Atruestring = "0.006"
+    @Published var Btruestring = "0.006"
+    
+    @Published var xteststring = "7.0"
+    @Published var yteststring = "7.0"
+    
+    @Published var xtruestring = "7.0"
+    @Published var ytruestring = "7.0"
+
+//    let I_0 = 1.5
+//    let width = 15
+//    let height = 15
+//    var numloop = 0.0
+//    var sum = 0.0
+//    var Intensity = 1.5
+//    var Sigmax = 1.3
+//    var Sigmay = 1.3
+//    var x_0 = 7.0
+//    var y_0 = 7.0
+//    var A = 0.006
+//    var B = 0.006
+
+    // used by the testing function
     func TiltedGaussian(I_0: Double, A: Double, B: Double, x_0: Double, y_0: Double, sigma_x: Double, sigma_y: Double, width: Int, height: Int) -> [[Double]]{
         var valuesarray: [(X:Double, Y:Double, Intensity:Double)] = []
         var numbers = [[Double]](repeating: [Double](repeating: 0.0, count: 15), count: 15)
@@ -44,30 +68,48 @@ class GaussianFinder: ObservableObject {
         }
         return(numbers)
     }
-    
-    func TiltedGaussian2(I_0: Double, A: Double, B: Double, x_0: Double, y_0: Double, sigma_x: Double, sigma_y: Double, width: Int, height: Int) -> [(X:Double, Y:Double, Intensity:Double)]{
-        var valuesarray: [(X:Double, Y:Double, Intensity:Double)] = []
-    for x in 0..<width{
-            for y in 0..<height{
-                let intensity = Gaussianeqn(x: x, y: y, x_0: x_0, y_0: y_0, sigma_x: sigma_x, sigma_y: sigma_y, I_0: I_0, A: A, B: B)
-                valuesarray.append((X: Double(x), Y: Double(y), Intensity: intensity))
-            }
-        }
-        return(valuesarray)
-    }
+//    func TiltedGaussian2(I_0: Double, A: Double, B: Double, x_0: Double, y_0: Double, sigma_x: Double, sigma_y: Double, width: Int, height: Int) -> [(X:Double, Y:Double, Intensity:Double)]{
+//        var valuesarray: [(X:Double, Y:Double, Intensity:Double)] = []
+//    for x in 0..<width{
+//            for y in 0..<height{
+//                let intensity = Gaussianeqn(x: x, y: y, x_0: x_0, y_0: y_0, sigma_x: sigma_x, sigma_y: sigma_y, I_0: I_0, A: A, B: B)
+//                valuesarray.append((X: Double(x), Y: Double(y), Intensity: intensity))
+//            }
+//        }
+//        return(valuesarray)
+//    }
     //this function is the loop that the base TiltedGaussian Functiona and the TestingGaussian utilize, which essentially finds the value of a gaussian function, using the given parameters, at a given x-y coordinate.
     func Gaussianeqn(x: Int, y: Int, x_0: Double, y_0: Double, sigma_x: Double, sigma_y: Double, I_0: Double, A: Double, B: Double) -> Double{
         let term1 = pow((Double(x)-x_0),2.0)/pow(sigma_x,2.0)
         let term2 = pow((Double(y)-y_0),2.0)/pow(sigma_y,2.0)
         //let exponential = I_0 * exp(-(term1 + term2))
         let exponential = I_0 * exp(-(term1 + term2))
-        let intensity = exponential + (A * (Double(x)-x_0)) + (B * (Double(y)-y_0))
-        return(intensity)
+        let value = exponential + (A * (Double(x)-x_0)) + (B * (Double(y)-y_0))
+        return(value)
     }
     
-    func TestingGaussian(){
+    func TestingGaussian() -> [Double]{
+        let I_true = Double(Itruestring)!
+        var Intensity = Double(Iteststring)!
+        
+        
+        let I_0 = 1.5
+        let width = 15
+        let height = 15
+        var numloop = 0.0
+       // var Intensity = 1.5
+        var Sigmax = Double(Sxteststring)!
+        var Sigmay = Double(Syteststring)!
+        let sigx_true = Double(Sxtruestring)!
+        let sigy_true = Double(Sytruestring)!
+        
+        
+        var x_0 = 7.0
+        var y_0 = 7.0
+        var A = 0.006
+        var B = 0.006
         //tolerances are very low, it can't handle too big of a spread, or else it finds a false minimum to fall into.
-        //things still to do: optimize the code more, seperate it into instances, make the graphing code animated rectangles work, comment the code. Make the rectangles
+        //things still to do: optimize the code more, seperate it into instances.
         var I_test = Intensity
         var Sigx_test = Sigmax
         var Sigy_test = Sigmay
@@ -77,7 +119,7 @@ class GaussianFinder: ObservableObject {
         var B_test = B
 
         var minimized = true
-        let TestingValues = TiltedGaussian(I_0: 1.5, A: 0.006, B: 0.006, x_0: 7.0, y_0: 7.0, sigma_x: 1.3, sigma_y: 1.3, width: 15, height: 15)
+        let TestingValues = TiltedGaussian(I_0: I_true, A: 0.006, B: 0.006, x_0: 7.0, y_0: 7.0, sigma_x: 1.3, sigma_y: 1.3, width: 15, height: 15)
         //this is the Intensity that the function below is testing against, to find the least squares. In the IPRO code, this would be removed,and it would be instead testing against the raw data.
         while minimized{
             //3x3x3x3x3x3x3 matrix
@@ -90,8 +132,9 @@ class GaussianFinder: ObservableObject {
             let m = 0.01
             let n = 0.0001
             let o = 0.0001
-            sum = 0.0
+            var sum = 0.0
            //let SumArray = mysuminstance.Sumfinder(Intensity: Intensity, A: A, B: A, x_0: x_0, y_0: y_0, Sigmax: Sigmax, Sigmay: Sigmay, width: width, height: height, h: h, k: k, f: f, l: l, m: m, n: n, o: o, TestingValues: TestingValues)
+            //Need to get this to work.
             for I in 0...2{
                 for J in 0...2{
                     for K in 0...2{
@@ -99,7 +142,7 @@ class GaussianFinder: ObservableObject {
                             for M in 0...2{
                                 for N in 0...2{
                                     for O in 0...2{
-                                        var sum = 0.0
+                                        sum = 0.0
                                         I_test = Intensity
                                         Sigx_test = Sigmax
                                         Sigy_test = Sigmay
@@ -143,11 +186,13 @@ class GaussianFinder: ObservableObject {
                 }
             }
             numloop = numloop + 1
-            print(Intensity, Sigmax, x_0, y_0, Sigmay, A, B)
+            print(Intensity, Sigmax, x_0, y_0, Sigmay, A, B) //this keeps running for some reason???
+            
             //tolerance is controlled here, tolerance value needs to increase (accuracy decrease) with more variables.
             if SumArray[1][1][1][1][1][1][1] <= 0.005{
                 minimized = false
                 var intensities: [(x:Double, y:Double, intensity:Double)] = []
+                var foundParameters :[Double] = []
 //                print("the value of I is \(Intensity)")
 //                print("the value of sigma_x^2 is \(Sigmax)")
 //                print("the value of sigma_y^2 is \(Sigmay)")
@@ -156,26 +201,30 @@ class GaussianFinder: ObservableObject {
 //                print("the value of A is \(A)")
 //                print("the value of B is \(B)")
 //                print("there were \(numloop) loops!")
-                //self.Istring = "The value of I is \(Intensity)."
                 Istring = String(format: "central intensity= %.2f.", Intensity)
-//                self.Sxstring = "The value of sigma_x^2 is \(round(Sigmax))."
                 Sxstring = String(format: "sigma_x^2= %.1f.", Sigmax)
-//                self.Systring = "The value of sigma_y^2 is \(Sigmay)."
                 Systring = String(format: "sigma_y^2= %.1f.", Sigmay)
-                //self.Astring = "The value of A is \(A)."
                 Astring = String(format: "A = %.3f.", A)
                 Bstring = String(format: "B = %.3f.", B)
                 xstring = String(format: "x= %.2f.", x_0)
                 ystring = String(format: "y = %.2f.", y_0)
                 self.numstring = "\(numloop) loops to get here!"
-                for x in 0..<width{
-                    for y in 0..<height{
-                        let intensity = Gaussianeqn(x: x, y: y, x_0: x0_test, y_0: y0_test, sigma_x: Sigx_test, sigma_y: Sigy_test, I_0: I_test, A: A_test, B: B_test)
-                        intensities.append((x: Double(x), y: Double(y), intensity: Double(intensity)))
-                        //need to make this return to the GaussFinder, so that i can be displayed in the graph proper. 
-                    }
-                }
-                break
+                
+                foundParameters.append(Intensity)
+                foundParameters.append(Sigmax)
+                foundParameters.append(Sigmay)
+                foundParameters.append(A)
+                foundParameters.append(B)
+                foundParameters.append(x_0)
+                foundParameters.append(y_0)
+//                for x in 0..<width{
+//                    for y in 0..<height{
+//                        let intensity = Gaussianeqn(x: x, y: y, x_0: x0_test, y_0: y0_test, sigma_x: Sigx_test, sigma_y: Sigy_test, I_0: I_test, A: A_test, B: B_test)
+//                        intensities.append((x: Double(x), y: Double(y), intensity: Double(intensity)))
+//                        //need to make this return to the GaussFinder, so that i can be displayed in the graph proper.
+//                    }
+//                }
+                return foundParameters
             }
 
             //sum needs to be the entirety of the x=15 width, or it does not work. So i would need to do a small loop, for the x width, for the four values of (I-H, S), (I+H, S), (I+H, S+K), and (I, S+K). do those sums, and find the slope of those sums relative to each other.
