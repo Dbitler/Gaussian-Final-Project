@@ -20,6 +20,9 @@
 		AB1D84AB29FC7F1600C173B8 /* SumFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1D84AA29FC7F1600C173B8 /* SumFinder.swift */; };
 		AB1D84AC29FC7F1600C173B8 /* SumFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1D84AA29FC7F1600C173B8 /* SumFinder.swift */; };
 		AB1D84AD29FC7F1600C173B8 /* SumFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1D84AA29FC7F1600C173B8 /* SumFinder.swift */; };
+		AB1D84AF2A0459B800C173B8 /* BaselineGaussianEquations.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1D84AE2A0459B800C173B8 /* BaselineGaussianEquations.swift */; };
+		AB1D84B02A0459B800C173B8 /* BaselineGaussianEquations.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1D84AE2A0459B800C173B8 /* BaselineGaussianEquations.swift */; };
+		AB1D84B12A0459B800C173B8 /* BaselineGaussianEquations.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1D84AE2A0459B800C173B8 /* BaselineGaussianEquations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +56,7 @@
 		AB1D846229FB444E00C173B8 /* Gaussian_Final_ProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gaussian_Final_ProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		AB1D84A629FC7C1F00C173B8 /* GaussianFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFinder.swift; sourceTree = "<group>"; };
 		AB1D84AA29FC7F1600C173B8 /* SumFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SumFinder.swift; sourceTree = "<group>"; };
+		AB1D84AE2A0459B800C173B8 /* BaselineGaussianEquations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaselineGaussianEquations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,7 @@
 		AB1D843829FB444D00C173B8 = {
 			isa = PBXGroup;
 			children = (
+				AB1D84AE2A0459B800C173B8 /* BaselineGaussianEquations.swift */,
 				AB1D84AA29FC7F1600C173B8 /* SumFinder.swift */,
 				AB1D84A629FC7C1F00C173B8 /* GaussianFinder.swift */,
 				AB1D844329FB444D00C173B8 /* Gaussian Final Project */,
@@ -270,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB1D844729FB444D00C173B8 /* ContentView.swift in Sources */,
+				AB1D84AF2A0459B800C173B8 /* BaselineGaussianEquations.swift in Sources */,
 				AB1D84A729FC7C1F00C173B8 /* GaussianFinder.swift in Sources */,
 				AB1D844529FB444D00C173B8 /* Gaussian_Final_ProjectApp.swift in Sources */,
 				AB1D84AB29FC7F1600C173B8 /* SumFinder.swift in Sources */,
@@ -281,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB1D84AC29FC7F1600C173B8 /* SumFinder.swift in Sources */,
+				AB1D84B02A0459B800C173B8 /* BaselineGaussianEquations.swift in Sources */,
 				AB1D84A829FC7C1F00C173B8 /* GaussianFinder.swift in Sources */,
 				AB1D845729FB444E00C173B8 /* Gaussian_Final_ProjectTests.swift in Sources */,
 			);
@@ -291,6 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB1D846329FB444E00C173B8 /* Gaussian_Final_ProjectUITestsLaunchTests.swift in Sources */,
+				AB1D84B12A0459B800C173B8 /* BaselineGaussianEquations.swift in Sources */,
 				AB1D84A929FC7C1F00C173B8 /* GaussianFinder.swift in Sources */,
 				AB1D846129FB444E00C173B8 /* Gaussian_Final_ProjectUITests.swift in Sources */,
 				AB1D84AD29FC7F1600C173B8 /* SumFinder.swift in Sources */,

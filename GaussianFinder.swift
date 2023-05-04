@@ -9,6 +9,7 @@ import SwiftUI
 
 class GaussianFinder: ObservableObject {
     @ObservedObject var mysuminstance = SumFinder()
+    @ObservedObject var myequationinstance = BaselineGaussianEquations()
     @Published var TestString = ""
     @Published var Istring = ""
     @Published var Sxstring = ""
@@ -40,54 +41,6 @@ class GaussianFinder: ObservableObject {
     @Published var xtruestring = "7.0"
     @Published var ytruestring = "7.0"
     var foundParameters :[Double] = []
-
-//    let I_0 = 1.5
-//    let width = 15
-//    let height = 15
-//    var numloop = 0.0
-//    var sum = 0.0
-//    var Intensity = 1.5
-//    var Sigmax = 1.3
-//    var Sigmay = 1.3
-//    var x_0 = 7.0
-//    var y_0 = 7.0
-//    var A = 0.006
-//    var B = 0.006
-
-    // used by the testing function
-    func TiltedGaussian(I_0: Double, A: Double, B: Double, x_0: Double, y_0: Double, sigma_x: Double, sigma_y: Double, width: Int, height: Int) -> [[Double]]{
-        var valuesarray: [(X:Double, Y:Double, Intensity:Double)] = []
-        var numbers = [[Double]](repeating: [Double](repeating: 0.0, count: 15), count: 15)
-        ////15x15 matrix, each would have the
-        //print(numbers2)
-        for x in 0..<width{
-            for y in 0..<height{
-                let intensity = Gaussianeqn(x: x, y: y, x_0: x_0, y_0: y_0, sigma_x: sigma_x, sigma_y: sigma_y, I_0: I_0, A: A, B: B)
-                valuesarray.append((X: Double(x), Y: Double(y), Intensity: intensity))
-                numbers[x][y]=intensity
-            }
-        }
-        return(numbers)
-    }
-//    func TiltedGaussian2(I_0: Double, A: Double, B: Double, x_0: Double, y_0: Double, sigma_x: Double, sigma_y: Double, width: Int, height: Int) -> [(X:Double, Y:Double, Intensity:Double)]{
-//        var valuesarray: [(X:Double, Y:Double, Intensity:Double)] = []
-//    for x in 0..<width{
-//            for y in 0..<height{
-//                let intensity = Gaussianeqn(x: x, y: y, x_0: x_0, y_0: y_0, sigma_x: sigma_x, sigma_y: sigma_y, I_0: I_0, A: A, B: B)
-//                valuesarray.append((X: Double(x), Y: Double(y), Intensity: intensity))
-//            }
-//        }
-//        return(valuesarray)
-//    }
-    //this function is the loop that the base TiltedGaussian Functiona and the TestingGaussian utilize, which essentially finds the value of a gaussian function, using the given parameters, at a given x-y coordinate.
-    func Gaussianeqn(x: Int, y: Int, x_0: Double, y_0: Double, sigma_x: Double, sigma_y: Double, I_0: Double, A: Double, B: Double) -> Double{
-        let term1 = pow((Double(x)-x_0),2.0)/pow(sigma_x,2.0)
-        let term2 = pow((Double(y)-y_0),2.0)/pow(sigma_y,2.0)
-        //let exponential = I_0 * exp(-(term1 + term2))
-        let exponential = I_0 * exp(-(term1 + term2))
-        let value = exponential + (A * (Double(x)-x_0)) + (B * (Double(y)-y_0))
-        return(value)
-    }
     
     func TestingGaussian() -> [Double]{
         let I_true = Double(Itruestring)!
@@ -116,12 +69,11 @@ class GaussianFinder: ObservableObject {
         //things still to do: optimize the code more, seperate it into instances.
 
         var minimized = true
-        let TestingValues = TiltedGaussian(I_0: I_true, A: Atrue, B: Btrue, x_0: x_0true, y_0: y_0true, sigma_x: sigx_true, sigma_y: sigy_true, width: width, height: width)
+        let TestingValues = myequationinstance.TiltedGaussian(I_0: I_true, A: Atrue, B: Btrue, x_0: x_0true, y_0: y_0true, sigma_x: sigx_true, sigma_y: sigy_true, width: width, height: width)
         //this is the Intensity that the function below is testing against, to find the least squares. In the IPRO code, this would be removed,and it would be instead testing against the raw data.
         while minimized{
             //3x3x3x3x3x3x3 matrix
           // var SumArray = Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: 0.0, count: 3), count: 3), count: 3), count: 3), count: 3), count: 3), count: 3)
-            var TestedValues = [[Double]](repeating: [Double](repeating: 0.0, count: 15), count: 15)
             let h = 0.01
             let k = 0.01
             let f = 0.01
@@ -138,14 +90,6 @@ class GaussianFinder: ObservableObject {
             if SumArray[1][1][1][1][1][1][1] <= 0.005{
                 minimized = false
                  foundParameters = []
-//                print("the value of I is \(Intensity)")
-//                print("the value of sigma_x^2 is \(Sigmax)")
-//                print("the value of sigma_y^2 is \(Sigmay)")
-//                print("the value of x_0 is \(x_0)")
-//                print("the value of y_0 is \(x_0)")
-//                print("the value of A is \(A)")
-//                print("the value of B is \(B)")
-//                print("there were \(numloop) loops!")
                 Istring = String(format: "central intensity= %.2f.", Intensity)
                 Sxstring = String(format: "sigma_x^2= %.1f.", Sigmax)
                 Systring = String(format: "sigma_y^2= %.1f.", Sigmay)
@@ -162,13 +106,6 @@ class GaussianFinder: ObservableObject {
                 foundParameters.append(B)
                 foundParameters.append(x_0)
                 foundParameters.append(y_0)
-//                for x in 0..<width{
-//                    for y in 0..<height{
-//                        let intensity = Gaussianeqn(x: x, y: y, x_0: x0_test, y_0: y0_test, sigma_x: Sigx_test, sigma_y: Sigy_test, I_0: I_test, A: A_test, B: B_test)
-//                        intensities.append((x: Double(x), y: Double(y), intensity: Double(intensity)))
-//                        //need to make this return to the GaussFinder, so that i can be displayed in the graph proper.
-//                    }
-//                }
                 return foundParameters
             }
 
@@ -192,6 +129,8 @@ class GaussianFinder: ObservableObject {
                A_derivative = (SumArray[1][1][1][1][1][2][1] - SumArray[1][1][1][1][1][0][1]) / n
                B_derivative = (SumArray[1][1][1][1][1][1][2] - SumArray[1][1][1][1][1][1][0]) / o
             //if they are both negative, increase them. if they are both positive, decrease them.
+            
+            //could do a for loop for this if they were stored in an array, but don't have time to do that. 
             if I_derivative > 0 {
                 Intensity = Intensity - h
             }
