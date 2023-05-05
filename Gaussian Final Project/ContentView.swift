@@ -6,9 +6,7 @@
 //
 // Main problems left to solve:
 // ----------------------------
-// need to make the graphs update when variables are edited and the button is pressed.
-// the baseline graph function refuses to graph, despite the function clearly being called upon????
-// graph changes to ellipsoidal when the string is changed in the code, but not when it is changed in the text box. 
+// maybe make it so the canvas only updates when the functions are called?
 // That's it, i guess????
 
 import SwiftUI
@@ -112,7 +110,7 @@ struct ContentView: View {
                 TimelineView(.animation) { timeline in
                     Canvas { context, size in
                         gaussFinder.update(to: timeline.date)
-                        print(gaussFinder.fittingintensities)
+                        //print(gaussFinder.fittingintensities)
                         for value in gaussFinder.fittingintensities{
                             let rect = CGRect(x: value.x * (size.width/CGFloat(Width)), y: value.y * (size.height/CGFloat(Width)), width: (size.height/CGFloat(Width)), height: (size.height/CGFloat(Width)))
                             let shape = Rectangle().path(in: rect)
@@ -183,9 +181,9 @@ struct FittingIntensity: Hashable, Equatable {
 }
 
 class TestGaussianFinder: ObservableObject{
-    var intensities: [Intensity] = []
+    //var intensities: [Intensity] = []
     //var fittingintensities: [FittingIntensity] = []
-  // @Published var intensities: [(x:Double, y:Double, intensity:Double)] = []
+  var intensities: [(x:Double, y:Double, intensity:Double)] = []
    @Published var fittingintensities: [(x:Double, y:Double, intensity:Double)] = []
    var mygaussianinstance: GaussianFinder? = nil
  var myequationinstance = BaselineGaussianEquations()
@@ -218,24 +216,23 @@ class TestGaussianFinder: ObservableObject{
             for x in 0..<width{
                 for y in 0..<height{
                     let value = myequationinstance.Gaussianeqn(x: x, y: y, x_0: x_0, y_0: y_0, sigma_x: sigma_x, sigma_y: sigma_y, I_0: I_0, A: A, B: B)
-                    intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
+                   // intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
                     if value > normalizefactor{
                         normalizefactor = value
                     }
                     if value < positivefactor{
                         positivefactor = value
                     }
-                    //intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
-                    //intensities.append(Intensity(x: Double(x), y: Double(y), intensity: Double(value)))
+                    intensities.append((x: Double(x), y: Double(y), intensity: Double(value)))
                     //have to normalize the values, such that the maximum value in the graph is =1, so that the colors of the graph look alright.
                 }
 
             }
             // this normalizes the data, such that the data is all positive and between 0 and 1, thus preventing the color code from peaking out and flattening the curve. has the side effect of making every graph look the same.
-            //for y in 0..<(height*width){
-                //intensities[y].2 = Double(intensities[y].intensity) - positivefactor
-                //intensities[y].2 = Double(intensities[y].intensity) / normalizefactor
-           // }
+            for y in 0..<(height*width){
+                intensities[y].2 = Double(intensities[y].intensity) - positivefactor
+                intensities[y].2 = Double(intensities[y].intensity) / normalizefactor
+            }
            
             //print(intensities)
         
@@ -263,10 +260,10 @@ class TestGaussianFinder: ObservableObject{
                     //need to make this return to the GaussFinder, so that i can be displayed in the graph proper.
                 }
             }
-//            for y in 0..<(height*width){
-//                fittingintensities[y].2 = Double(fittingintensities[y].intensity) - positivefactor_fit
-//                fittingintensities[y].2 = Double(fittingintensities[y].intensity) / normalizefactor_fit
-//            }
+            for y in 0..<(height*width){
+                fittingintensities[y].2 = Double(fittingintensities[y].intensity) - positivefactor_fit
+                fittingintensities[y].2 = Double(fittingintensities[y].intensity) / normalizefactor_fit
+            }
            // Test = false
         }
 //    func FittingGaussian(foundParameters: [Double]){
