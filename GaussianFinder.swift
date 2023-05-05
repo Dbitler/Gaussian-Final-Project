@@ -21,6 +21,7 @@ class GaussianFinder: ObservableObject {
     @Published var xstring = ""
     @Published var ystring = ""
     @Published var numstring = ""
+    @Published var mystring = ""
     
     @Published var Iteststring = "1.0"
     @Published var Itruestring = "1.0"
@@ -54,7 +55,7 @@ class GaussianFinder: ObservableObject {
         let height = 15
         var numloop = 0.0
        // var Intensity = 1.5
-        //something is wrong with the algorithm for sigma x and sigma y, I don't know what. Sigma x is unable to find values smaller than initial value, and sigma y is unable to find values larger than initial value. 
+        //something is wrong with the algorithm for sigma x and sigma y, I don't know what. Sigma x is unable to find values smaller than initial value, and sigma y is unable to find values larger than initial value. Sigma y //can// find values larger than initial value, but only as long as true sigma x is as large or larger. same for Sigma x, it //can// find values smaller than initial value, but only as long as the true sigma y is smaller. 
         var Sigmax = Double(Sxteststring)!
         var Sigmay = Double(Syteststring)!
         let sigx_true = Double(Sxtruestring)!
@@ -93,7 +94,7 @@ class GaussianFinder: ObservableObject {
             
             
             numloop = numloop + 1
-            print(Intensity, Sigmax, x_0, y_0, Sigmay, A, B) //this keeps running for some reason???
+            print(Intensity, Sigmax, x_0, y_0, Sigmay, A, B)
             
             //tolerance is controlled here, tolerance value needs to increase (accuracy decrease) with more variables.
             if SumArray[1][1][1][1][1][1][1] <= 0.008{
@@ -117,8 +118,7 @@ class GaussianFinder: ObservableObject {
                 foundParameters.append(y_0)
                 
                 return foundParameters
-               // gaussFinder.FittingGaussian(foundParameters: foundParameters)
-            }
+                }
 
             //sum needs to be the entirety of the x=15 width, or it does not work. So i would need to do a small loop, for the x width, for the four values of (I-H, S), (I+H, S), (I+H, S+K), and (I, S+K). do those sums, and find the slope of those sums relative to each other.
 
@@ -134,12 +134,11 @@ class GaussianFinder: ObservableObject {
             //numerical derivation for each of the 7 variables in the tilted gaussian profile.
                I_derivative = (SumArray[2][1][1][1][1][1][1] - SumArray[0][1][1][1][1][1][1]) / Istep
             sigx_derivative = (SumArray[1][2][1][1][1][1][1] - SumArray[1][0][1][1][1][1][1]) / Sxstep
-               x_derivative = (SumArray[1][1][2][1][1][1][1] - SumArray[1][1][0][1][1][1][1]) / Systep
-            sigy_derivative = (SumArray[1][1][1][2][1][1][1] - SumArray[1][1][1][0][1][1][1]) / x0step
+               x_derivative = (SumArray[1][1][2][1][1][1][1] - SumArray[1][1][0][1][1][1][1]) / x0step
+            sigy_derivative = (SumArray[1][1][1][2][1][1][1] - SumArray[1][1][1][0][1][1][1]) / Systep
                y_derivative = (SumArray[1][1][1][1][2][1][1] - SumArray[1][1][1][1][0][1][1]) / y0step
                A_derivative = (SumArray[1][1][1][1][1][2][1] - SumArray[1][1][1][1][1][0][1]) / Astep
                B_derivative = (SumArray[1][1][1][1][1][1][2] - SumArray[1][1][1][1][1][1][0]) / Bstep
-            //if they are both negative, increase them. if they are both positive, decrease them.
             
             //could do a for loop for this if they were stored in an array, but don't have time to do that. 
             if I_derivative > 0.0 {

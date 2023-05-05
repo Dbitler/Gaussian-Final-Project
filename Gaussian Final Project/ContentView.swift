@@ -24,6 +24,7 @@ struct ContentView: View {
     @State var xstring = ""
     @State var ystring = ""
     @State var numstring = ""
+    var mystring = ""
     
     
     let Width = 15
@@ -129,7 +130,7 @@ struct ContentView: View {
                 .padding()
             }
                     
-                
+            TextEditor(text: $mygaussianinstance.mystring)
             }
             .padding()
             VStack{
