@@ -7,6 +7,7 @@
 // Main problems left to solve:
 // ----------------------------
 // maybe make it so the canvas only updates when the functions are called?
+// bug for Sig x and Sig y. get caught in a recursive loop when true values are smaller or higher than initial function, respectively. 
 // That's it, i guess????
 
 import SwiftUI
@@ -31,6 +32,7 @@ struct ContentView: View {
         VStack{
             HStack{
                 VStack{
+                    Text("True Values:")
                     TextField("True intensity value", text: $mygaussianinstance.Itruestring)
                     
                     TextField("True sigma_x^2 value", text: $mygaussianinstance.Sxtruestring)
@@ -48,6 +50,7 @@ struct ContentView: View {
                 }
                 .padding()
                 VStack{
+                    Text("Fitting Values: ")
                     TextField("Starting intensity value", text: $mygaussianinstance.Iteststring)
                     
                     TextField("Starting sigma_x^2 value", text: $mygaussianinstance.Sxteststring)
@@ -107,19 +110,19 @@ struct ContentView: View {
                 .background(.black)
                 .ignoresSafeArea()
                 .padding()
-                TimelineView(.animation) { timeline in
-                    Canvas { context, size in
-                        gaussFinder.update(to: timeline.date)
-                        //print(gaussFinder.fittingintensities)
-                        for value in gaussFinder.fittingintensities{
-                            let rect = CGRect(x: value.x * (size.width/CGFloat(Width)), y: value.y * (size.height/CGFloat(Width)), width: (size.height/CGFloat(Width)), height: (size.height/CGFloat(Width)))
-                            let shape = Rectangle().path(in: rect)
-                            
-                            context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.3 - value.intensity, blue: 0.5 - value.intensity)))
-                            
+                    TimelineView(.animation) { timeline in
+                        Canvas { context, size in
+                            gaussFinder.update(to: timeline.date)
+                            //print(gaussFinder.fittingintensities)
+                            for value in gaussFinder.fittingintensities{
+                                let rect = CGRect(x: value.x * (size.width/CGFloat(Width)), y: value.y * (size.height/CGFloat(Width)), width: (size.height/CGFloat(Width)), height: (size.height/CGFloat(Width)))
+                                let shape = Rectangle().path(in: rect)
+                                
+                                context.fill(shape, with: .color(Color(red: 0.0 + value.intensity, green: 0.3 - value.intensity, blue: 0.5 - value.intensity)))
+                                
+                            }
                         }
                     }
-                }
                 .frame(width: 200, height: 200)
                 .background(.black)
                 .ignoresSafeArea()

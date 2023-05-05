@@ -76,90 +76,19 @@ class GaussianFinder: ObservableObject {
         var minimized = true
         let TestingValues = myequationinstance.TiltedGaussian(I_0: I_true, A: Atrue, B: Btrue, x_0: x_0true, y_0: y_0true, sigma_x: sigx_true, sigma_y: sigy_true, width: width, height: width)
         //this is the Intensity that the function below is testing against, to find the least squares. In the IPRO code, this would be removed,and it would be instead testing against the raw data.
-        
-        let h = 0.01
-        let k = 0.01
-        let f = 0.01
-        let l = 0.01
-        let m = 0.01
-        let n = 0.0001
-        let o = 0.0001
-        
-        let Istep = h
-        let Sxstep = k
-        let Systep = l
-        let x0step = f
-        let y0step = m
-        let Astep = n
-        let Bstep = o
+        let Istep = 0.01
+        let Sxstep = 0.01
+        let Systep = 0.01
+        let x0step = 0.01
+        let y0step = 0.01
+        let Astep = 0.0001
+        let Bstep = 0.0001
         
         while minimized{
             //3x3x3x3x3x3x3 matrix
-          // let SumArray = mysuminstance.Sumfinder(Intensity: Intensity, A: A, B: B, x_0: x_0, y_0: y_0, Sigmax: Sigmax, Sigmay: Sigmay, width: width, height: height, Istep: h, Sxstep: k, Systep: l, x0step: f, y0step: m, Astep: n, Bstep: o, TestingValues: TestingValues)
+           let SumArray = mysuminstance.Sumfinder(Intensity: Intensity, A: A, B: B, x_0: x_0, y_0: y_0, Sigmax: Sigmax, Sigmay: Sigmay, width: width, height: height, Istep: Istep, Sxstep: Sxstep, Systep: Systep, x0step: x0step, y0step: y0step, Astep: Astep, Bstep: Bstep, TestingValues: TestingValues)
             
-            var TestedValues = [[Double]](repeating: [Double](repeating: 0.0, count: 15), count: 15)
-            var I_test = Intensity
-            var Sigx_test = Sigmax
-            var Sigy_test = Sigmay
-            var x0_test = x_0
-            var y0_test = y_0
-            var A_test = A
-            var B_test = B
-            var SumArray = Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: Array(repeating: 0.0, count: 3), count: 3), count: 3), count: 3), count: 3), count: 3), count: 3)
-
-            for I in 0...2{
-                for J in 0...2{
-                    for K in 0...2{
-                        for L in 0...2{
-                            for M in 0...2{
-                                for N in 0...2{
-                                    for O in 0...2{
-                                        var sum = 0.0
-                                        I_test = Intensity
-                                        Sigx_test = Sigmax
-                                        Sigy_test = Sigmay
-                                        x0_test = x_0
-                                        y0_test = y_0
-                                        A_test = A
-                                        B_test = B
-                                        // Sigx_test = Sigmax + (Double(J - 1) * k * Sigmax)
-                                        //  Sigy_test = Sigmay + (Double(L - 1) * l * Sigmay)
-                                        // I_test  = Intensity + (Double(I - 1) * h * Intensity)
-                                        // x0_test = x_0 + (Double(K - 1) * f * x_0)
-                                        //y0_test = y_0 + (Double(M - 1) * m * x_0)
-                                        //A_test = A + (Double(N - 1) * n * A)
-                                        // B_test = B + (Double(O - 1) * o * B)
-                                        I_test  = Intensity + (Double(I - 1) * Istep)
-                                        Sigx_test = Sigmax + (Double(J - 1) * Sxstep)
-                                        Sigy_test = Sigmay + (Double(L - 1) * Systep)
-                                        x0_test = x_0 + (Double(K - 1) * x0step)
-                                        y0_test = y_0 + (Double(M - 1) * y0step)
-                                        A_test = A + (Double(N - 1) * Astep )
-                                        B_test = B + (Double(O - 1) * Bstep)
-
-                                        //no idea how this program would react to trying to creat a gaussian profile near the edge of a photo, because you would have to only fit half a gaussian. should probably discard star candidates within 7-8 pixels of the edge.
-                                        for x in 0..<width{
-                                            for y in 0..<height{
-                                                let term1 = pow((Double(x)-x0_test),2.0)/pow(Sigx_test,2.0)
-                                                let term2 = pow((Double(y)-y0_test),2.0)/pow(Sigy_test,2.0)
-                                                let exponential = I_test * exp(-(term1+term2))
-                                                let intensity = exponential + (A_test * (Double(x)-x0_test)) + (B_test * (Double(y)-y0_test))
-                                                //this is the array that will become graphed.
-                                                TestedValues[x][y]=intensity
-                                                sum = sum + pow((TestingValues[x][y] - TestedValues[x][y]),2)
-                                            }
-                                        }
-                                        // print(I_test,Sig_test, sum)
-                                        //I, sx, x0, sy, y0, a, b
-                                        SumArray[I][J][K][L][M][N][O] = sum
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
+         
             
             
             
@@ -203,58 +132,58 @@ class GaussianFinder: ObservableObject {
             var B_derivative = 0.0
 
             //numerical derivation for each of the 7 variables in the tilted gaussian profile.
-               I_derivative = (SumArray[2][1][1][1][1][1][1] - SumArray[0][1][1][1][1][1][1]) / h
-            sigx_derivative = (SumArray[1][2][1][1][1][1][1] - SumArray[1][0][1][1][1][1][1]) / k
-               x_derivative = (SumArray[1][1][2][1][1][1][1] - SumArray[1][1][0][1][1][1][1]) / f
-            sigy_derivative = (SumArray[1][1][1][2][1][1][1] - SumArray[1][1][1][0][1][1][1]) / l
-               y_derivative = (SumArray[1][1][1][1][2][1][1] - SumArray[1][1][1][1][0][1][1]) / m
-               A_derivative = (SumArray[1][1][1][1][1][2][1] - SumArray[1][1][1][1][1][0][1]) / n
-               B_derivative = (SumArray[1][1][1][1][1][1][2] - SumArray[1][1][1][1][1][1][0]) / o
+               I_derivative = (SumArray[2][1][1][1][1][1][1] - SumArray[0][1][1][1][1][1][1]) / Istep
+            sigx_derivative = (SumArray[1][2][1][1][1][1][1] - SumArray[1][0][1][1][1][1][1]) / Sxstep
+               x_derivative = (SumArray[1][1][2][1][1][1][1] - SumArray[1][1][0][1][1][1][1]) / Systep
+            sigy_derivative = (SumArray[1][1][1][2][1][1][1] - SumArray[1][1][1][0][1][1][1]) / x0step
+               y_derivative = (SumArray[1][1][1][1][2][1][1] - SumArray[1][1][1][1][0][1][1]) / y0step
+               A_derivative = (SumArray[1][1][1][1][1][2][1] - SumArray[1][1][1][1][1][0][1]) / Astep
+               B_derivative = (SumArray[1][1][1][1][1][1][2] - SumArray[1][1][1][1][1][1][0]) / Bstep
             //if they are both negative, increase them. if they are both positive, decrease them.
             
             //could do a for loop for this if they were stored in an array, but don't have time to do that. 
-            if I_derivative > 0 {
-                Intensity = Intensity - h
+            if I_derivative > 0.0 {
+                Intensity = Intensity - Istep
             }
-            if I_derivative < 0 {
-                Intensity = Intensity + h
+            if I_derivative < 0.0 {
+                Intensity = Intensity + Istep
             }
             if sigx_derivative > 0 {
-                Sigmax = Sigmax - k
+                Sigmax = Sigmax - Sxstep
             }
             if sigx_derivative < 0 {
-                Sigmax = Sigmax + k
+                Sigmax = Sigmax + Sxstep
             }
             
             if sigy_derivative > 0 {
-                Sigmay = Sigmay - l
+                Sigmay = Sigmay - Systep
             }
             if sigy_derivative < 0 {
-                Sigmay = Sigmax + l
+                Sigmay = Sigmax + Systep
             }
             if x_derivative > 0{
-                x_0 = x_0 - f
+                x_0 = x_0 - x0step
             }
             if x_derivative < 0{
-                x_0 = x_0 + f
+                x_0 = x_0 + x0step
             }
             if y_derivative > 0{
-                y_0 = y_0 - m
+                y_0 = y_0 - y0step
             }
             if y_derivative < 0{
-                y_0 = y_0 + m
+                y_0 = y_0 + y0step
             }
             if A_derivative > 0{
-                A = A - n
+                A = A - Astep
             }
             if A_derivative < 0{
-                A = A + n
+                A = A + Astep
             }
             if B_derivative > 0{
-                B = B - o
+                B = B - Bstep
             }
             if B_derivative < 0{
-                B = B + o
+                B = B + Bstep
             }
 
         }
