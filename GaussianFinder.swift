@@ -55,7 +55,6 @@ class GaussianFinder: ObservableObject {
         let height = 15
         var numloop = 0.0
        // var Intensity = 1.5
-        //something is wrong with the algorithm for sigma x and sigma y, I don't know what. Sigma x is unable to find values smaller than initial value, and sigma y is unable to find values larger than initial value. Sigma y //can// find values larger than initial value, but only as long as true sigma x is as large or larger. same for Sigma x, it //can// find values smaller than initial value, but only as long as the true sigma y is smaller. 
         var Sigmax = Double(Sxteststring)!
         var Sigmay = Double(Syteststring)!
         let sigx_true = Double(Sxtruestring)!
@@ -119,10 +118,7 @@ class GaussianFinder: ObservableObject {
                 
                 return foundParameters
                 }
-
-            //sum needs to be the entirety of the x=15 width, or it does not work. So i would need to do a small loop, for the x width, for the four values of (I-H, S), (I+H, S), (I+H, S+K), and (I, S+K). do those sums, and find the slope of those sums relative to each other.
-
-            //use only two derivatives. if dR/dI is negative/postive over a certain tolerance, increase/decrease Intensity accordingly. Same for sigma and dr/dsigma.
+            //if dR/dI is negative/postive over a certain tolerance, increase/decrease Intensity accordingly. Same for sigma and dr/dsigma.
             var I_derivative = 0.0
             var sigx_derivative = 0.0
             var sigy_derivative = 0.0
@@ -158,7 +154,7 @@ class GaussianFinder: ObservableObject {
                 Sigmay = Sigmay - Systep
             }
             if sigy_derivative < 0 {
-                Sigmay = Sigmax + Systep
+                Sigmay = Sigmay + Systep
             }
             if x_derivative > 0{
                 x_0 = x_0 - x0step

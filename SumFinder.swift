@@ -55,17 +55,6 @@ class SumFinder: ObservableObject{
                                     B_test = B + (Double(O - 1) * Bstep)
 
                                     //no idea how this program would react to trying to creat a gaussian profile near the edge of a photo, because you would have to only fit half a gaussian. should probably discard star candidates within 7-8 pixels of the edge.
-//                                    for x in 0..<width{
-//                                        for y in 0..<height{
-//                                            let term1 = pow((Double(x)-x0_test),2.0)/pow(Sigx_test,2.0)
-//                                            let term2 = pow((Double(y)-y0_test),2.0)/pow(Sigy_test,2.0)
-//                                            let exponential = I_test * exp(-(term1+term2))
-//                                            let intensity = exponential + (A_test * (Double(x)-x0_test)) + (B_test * (Double(y)-y0_test))
-//                                            //this is the array that will become graphed.
-//                                            TestedValues[x][y]=intensity
-//                                            sum = sum + pow((TestingValues[x][y] - TestedValues[x][y]),2)
-//                                        }
-//                                    }
                                     for x in 0..<width{
                                         for y in 0..<height{
                                             let intensity = myequationinstance.Gaussianeqn(x: x, y: y, x_0: x0_test, y_0: y0_test, sigma_x: Sigx_test, sigma_y: Sigy_test, I_0: I_test, A: A_test, B: B_test)

@@ -7,8 +7,7 @@
 // Main problems left to solve:
 // ----------------------------
 // maybe make it so the canvas only updates when the functions are called?
-// bug for Sig x and Sig y. get caught in a recursive loop when true values are smaller or higher than initial function, respectively. 
-// That's it, i guess????
+// bug for Sig x and Sig y. get caught in a recursive loop when true sig x is smaller than sig y FIXED
 
 import SwiftUI
 
