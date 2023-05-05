@@ -10,6 +10,8 @@ import SwiftUI
 class GaussianFinder: ObservableObject {
     @ObservedObject var mysuminstance = SumFinder()
     @ObservedObject var myequationinstance = BaselineGaussianEquations()
+    
+
     @Published var TestString = ""
     @Published var Istring = ""
     @Published var Sxstring = ""
@@ -27,8 +29,8 @@ class GaussianFinder: ObservableObject {
     @Published var Sxteststring = "1.3"
     @Published var Syteststring = "1.3"
     
-    @Published var Sxtruestring = "1.3"
-    @Published var Sytruestring = "1.3"
+     var Sxtruestring = "1.3"
+     var Sytruestring = "1.3"
     
     @Published var Ateststring = "0.006"
     @Published var Bteststring = "0.006"
@@ -43,7 +45,8 @@ class GaussianFinder: ObservableObject {
     @Published var ytruestring = "7.0"
     var foundParameters :[Double] = []
     
-    func TestingGaussian() -> [Double]{
+    func TestingGaussian() -> [Double]
+    {
         let I_true = Double(Itruestring)!
         var Intensity = Double(Iteststring)!
 
@@ -183,7 +186,9 @@ class GaussianFinder: ObservableObject {
                 foundParameters.append(B)
                 foundParameters.append(x_0)
                 foundParameters.append(y_0)
+                
                 return foundParameters
+               // gaussFinder.FittingGaussian(foundParameters: foundParameters)
             }
 
             //sum needs to be the entirety of the x=15 width, or it does not work. So i would need to do a small loop, for the x width, for the four values of (I-H, S), (I+H, S), (I+H, S+K), and (I, S+K). do those sums, and find the slope of those sums relative to each other.
